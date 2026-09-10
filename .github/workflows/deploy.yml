@@ -1,0 +1,24 @@
+name: Deploy Sentinel to Proxmox
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Pull latest changes and restart Docker stack
+        run: |
+          # Stop existing containers safely
+          docker compose down
+
+          # Rebuild and start the containers using environment variables
+          docker compose up --build -d
+
+          # Verify containers are running
+          docker ps
