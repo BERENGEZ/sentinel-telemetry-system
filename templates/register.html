@@ -1,0 +1,328 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Create Sentinel Account</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      /* Smooth scrollbar */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: rgba(148, 163, 184, 0.5);
+        border-radius: 10px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: rgba(148, 163, 184, 0.8);
+      }
+    </style>
+  </head>
+
+  <!-- Soft, premium background matching landing.html -->
+  <body
+    class="bg-[#f3f4f6] text-slate-800 min-h-screen flex items-center justify-center p-4 font-sans relative overflow-x-hidden"
+  >
+    <!-- THE AURORA BACKGROUND (Blurred colorful orbs behind the glass) -->
+    <div
+      class="fixed top-0 left-1/4 w-[500px] h-[500px] bg-blue-400/30 rounded-full blur-[120px] pointer-events-none -z-10"
+    ></div>
+    <div
+      class="fixed bottom-0 right-1/4 w-[600px] h-[600px] bg-indigo-400/20 rounded-full blur-[150px] pointer-events-none -z-10"
+    ></div>
+    <div
+      class="fixed top-1/2 left-1/2 w-[400px] h-[400px] bg-purple-400/20 rounded-full blur-[100px] pointer-events-none -z-10"
+    ></div>
+
+    <!-- MAIN GLASS PANEL -->
+    <div
+      class="w-full max-w-2xl bg-white/40 backdrop-blur-2xl border border-white/60 p-8 md:p-10 rounded-[2rem] shadow-[0_20px_40px_rgba(0,0,0,0.08)] relative z-10 my-8"
+    >
+      <!-- Header -->
+      <div class="text-center mb-8">
+        <div
+          class="inline-flex items-center justify-center h-14 w-14 rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-600 text-white mb-4 shadow-[0_8px_20px_rgba(79,70,229,0.3)]"
+        >
+          <svg
+            class="w-7 h-7"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+            ></path>
+          </svg>
+        </div>
+        <h1 class="text-3xl font-extrabold text-slate-900 tracking-tight">
+          Create Sentinel Account
+        </h1>
+        <p class="text-slate-500 text-sm mt-2 font-medium">
+          Register to deploy stealth agents and manage your hardware fleet.
+        </p>
+      </div>
+
+      <!-- Flask Error Message -->
+      {% if error %}
+      <div
+        class="mb-6 p-4 rounded-xl bg-red-50/80 backdrop-blur-sm border border-red-200 text-red-600 text-sm font-medium flex items-center space-x-3 shadow-sm"
+      >
+        <svg
+          class="w-5 h-5 flex-shrink-0"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+          ></path>
+        </svg>
+        <span>{{ error }}</span>
+      </div>
+      {% endif %}
+
+      <form
+        action="/register"
+        method="POST"
+        class="space-y-6"
+        id="regForm"
+        onsubmit="return validatePasswords();"
+      >
+        <!-- Prefix Selection (Interactive Light-Theme Radio Pills) -->
+        <div>
+          <label
+            class="block text-xs font-bold uppercase tracking-widest text-slate-500 mb-2"
+            >Title / Prefix</label
+          >
+          <div class="grid grid-cols-5 gap-2">
+            <label class="cursor-pointer">
+              <input
+                type="radio"
+                name="prefix"
+                value="Mr."
+                class="peer sr-only"
+                checked
+              />
+              <div
+                class="text-center py-2.5 rounded-xl border border-white/60 bg-white/50 peer-checked:border-indigo-500 peer-checked:bg-indigo-50 peer-checked:text-indigo-700 text-slate-600 text-xs font-bold transition-all shadow-sm"
+              >
+                Mr.
+              </div>
+            </label>
+            <label class="cursor-pointer">
+              <input
+                type="radio"
+                name="prefix"
+                value="Mrs."
+                class="peer sr-only"
+              />
+              <div
+                class="text-center py-2.5 rounded-xl border border-white/60 bg-white/50 peer-checked:border-indigo-500 peer-checked:bg-indigo-50 peer-checked:text-indigo-700 text-slate-600 text-xs font-bold transition-all shadow-sm"
+              >
+                Mrs.
+              </div>
+            </label>
+            <label class="cursor-pointer">
+              <input
+                type="radio"
+                name="prefix"
+                value="Ms."
+                class="peer sr-only"
+              />
+              <div
+                class="text-center py-2.5 rounded-xl border border-white/60 bg-white/50 peer-checked:border-indigo-500 peer-checked:bg-indigo-50 peer-checked:text-indigo-700 text-slate-600 text-xs font-bold transition-all shadow-sm"
+              >
+                Ms.
+              </div>
+            </label>
+            <label class="cursor-pointer">
+              <input
+                type="radio"
+                name="prefix"
+                value="Dr."
+                class="peer sr-only"
+              />
+              <div
+                class="text-center py-2.5 rounded-xl border border-white/60 bg-white/50 peer-checked:border-indigo-500 peer-checked:bg-indigo-50 peer-checked:text-indigo-700 text-slate-600 text-xs font-bold transition-all shadow-sm"
+              >
+                Dr.
+              </div>
+            </label>
+            <label class="cursor-pointer">
+              <input
+                type="radio"
+                name="prefix"
+                value="Eng."
+                class="peer sr-only"
+              />
+              <div
+                class="text-center py-2.5 rounded-xl border border-white/60 bg-white/50 peer-checked:border-indigo-500 peer-checked:bg-indigo-50 peer-checked:text-indigo-700 text-slate-600 text-xs font-bold transition-all shadow-sm"
+              >
+                Eng.
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <!-- Two Column Row: Official Name & Email -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+          <div>
+            <label
+              class="block text-xs font-bold uppercase tracking-widest text-slate-500 mb-2"
+              >Official Full Name</label
+            >
+            <input
+              type="text"
+              name="full_name"
+              required
+              placeholder="e.g. Your Name"
+              class="w-full bg-white/50 border border-white/60 focus:bg-white/80 focus:border-indigo-400 rounded-xl px-4 py-3 text-sm text-slate-900 placeholder-slate-400 outline-none transition shadow-sm"
+            />
+          </div>
+          <div>
+            <label
+              class="block text-xs font-bold uppercase tracking-widest text-slate-500 mb-2"
+              >Email Address</label
+            >
+            <input
+              type="email"
+              name="email"
+              required
+              placeholder="you@youremail.com"
+              class="w-full bg-white/50 border border-white/60 focus:bg-white/80 focus:border-indigo-400 rounded-xl px-4 py-3 text-sm text-slate-900 placeholder-slate-400 outline-none transition shadow-sm"
+            />
+          </div>
+        </div>
+
+        <!-- Two Column Row: Phone Number & Location -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+          <div>
+            <label
+              class="block text-xs font-bold uppercase tracking-widest text-slate-500 mb-2"
+              >Phone Number</label
+            >
+            <input
+              type="tel"
+              name="phone_number"
+              required
+              placeholder="000 000 0000"
+              class="w-full bg-white/50 border border-white/60 focus:bg-white/80 focus:border-indigo-400 rounded-xl px-4 py-3 text-sm text-slate-900 placeholder-slate-400 outline-none transition shadow-sm"
+            />
+          </div>
+          <div>
+            <label
+              class="block text-xs font-bold uppercase tracking-widest text-slate-500 mb-2"
+              >Primary Location / City</label
+            >
+            <input
+              type="text"
+              name="place_of_stay"
+              required
+              placeholder="e.g. City, Country"
+              class="w-full bg-white/50 border border-white/60 focus:bg-white/80 focus:border-indigo-400 rounded-xl px-4 py-3 text-sm text-slate-900 placeholder-slate-400 outline-none transition shadow-sm"
+            />
+          </div>
+        </div>
+
+        <!-- Two Column Row: Passwords with Live Check -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+          <div>
+            <label
+              class="block text-xs font-bold uppercase tracking-widest text-slate-500 mb-2"
+              >Password</label
+            >
+            <input
+              type="password"
+              id="password"
+              name="password"
+              required
+              minlength="6"
+              placeholder="••••••••"
+              class="w-full bg-white/50 border border-white/60 focus:bg-white/80 focus:border-indigo-400 rounded-xl px-4 py-3 text-sm text-slate-900 placeholder-slate-400 outline-none transition shadow-sm"
+            />
+          </div>
+          <div>
+            <label
+              class="block text-xs font-bold uppercase tracking-widest text-slate-500 mb-2"
+              >Confirm Password</label
+            >
+            <input
+              type="password"
+              id="confirm_password"
+              name="confirm_password"
+              required
+              minlength="6"
+              placeholder="••••••••"
+              class="w-full bg-white/50 border border-white/60 focus:bg-white/80 focus:border-indigo-400 rounded-xl px-4 py-3 text-sm text-slate-900 placeholder-slate-400 outline-none transition shadow-sm"
+            />
+          </div>
+        </div>
+
+        <!-- Real-Time Password Error Message -->
+        <p id="pw-error" class="text-xs font-medium text-red-500 hidden"></p>
+
+        <!-- Compliance & Agreement Checkbox -->
+        <div class="pt-4 border-t border-white/50">
+          <label class="flex items-start space-x-3 cursor-pointer group">
+            <input
+              type="checkbox"
+              required
+              class="mt-1 h-4 w-4 rounded border-slate-300 text-indigo-600 focus:ring-indigo-500 cursor-pointer"
+            />
+            <span
+              class="text-xs text-slate-500 leading-relaxed font-medium group-hover:text-slate-700 transition-colors"
+            >
+              I confirm that the telemetry and device management services will
+              be used exclusively for authorized tracking, fleet security, or
+              personal device recovery.
+            </span>
+          </label>
+        </div>
+
+        <!-- Submit Button -->
+        <button
+          type="submit"
+          class="w-full py-4 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl shadow-[0_8px_20px_rgba(79,70,229,0.3)] transition-all duration-300 text-sm tracking-wide uppercase"
+        >
+          Initialize Secure Account
+        </button>
+      </form>
+
+      <p class="text-center text-sm font-medium text-slate-500 mt-8">
+        Already have an account?
+        <a
+          href="/login"
+          class="text-indigo-600 hover:text-indigo-800 font-bold ml-1 transition-colors"
+          >Sign In here</a
+        >
+      </p>
+    </div>
+
+    <script>
+      function validatePasswords() {
+        const p1 = document.getElementById("password").value;
+        const p2 = document.getElementById("confirm_password").value;
+        const err = document.getElementById("pw-error");
+
+        if (p1 !== p2) {
+          err.innerText =
+            "Passwords do not match. Please ensure both fields are identical.";
+          err.classList.remove("hidden");
+          return false;
+        }
+        err.classList.add("hidden");
+        return true;
+      }
+    </script>
+  </body>
+</html>

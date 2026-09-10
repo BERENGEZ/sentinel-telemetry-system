@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Provision Hardware | Sentinel</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: rgba(82, 82, 91, 0.5);
+        border-radius: 10px;
+      }
+    </style>
+  </head>
+
+  <body
+    class="bg-zinc-950 text-zinc-200 font-sans h-screen flex items-center justify-center p-4 relative overflow-hidden"
+  >
+    <div
+      class="fixed top-[-10%] left-[-10%] w-[500px] h-[500px] bg-indigo-600/10 rounded-full blur-[120px] pointer-events-none z-0"
+    ></div>
+    <div
+      class="fixed bottom-[-10%] right-[-10%] w-[500px] h-[500px] bg-zinc-500/10 rounded-full blur-[120px] pointer-events-none z-0"
+    ></div>
+
+    <div
+      class="w-full max-w-lg bg-zinc-900/60 backdrop-blur-2xl border border-zinc-700/50 p-8 md:p-10 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] relative z-10 group overflow-hidden"
+    >
+      <div
+        class="absolute -right-10 -top-10 w-32 h-32 bg-indigo-500/10 rounded-full blur-2xl group-hover:bg-indigo-500/20 transition-colors pointer-events-none"
+      ></div>
+
+      <div class="text-center mb-8 relative z-10">
+        <div
+          class="inline-flex items-center justify-center h-14 w-14 rounded-2xl bg-zinc-800/80 border border-zinc-700/50 text-indigo-400 mb-5 shadow-[0_0_15px_rgba(99,102,241,0.15)]"
+        >
+          <svg
+            class="w-7 h-7"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"
+            ></path>
+          </svg>
+        </div>
+        <h1 class="text-2xl font-extrabold text-white tracking-tight">
+          Provision Hardware
+        </h1>
+        <p class="text-zinc-400 text-sm mt-2 font-medium">
+          Configure deployment parameters for the new node.
+        </p>
+      </div>
+
+      <form
+        id="enrollForm"
+        method="POST"
+        action="/enroll"
+        class="space-y-6 relative z-10"
+      >
+        <div>
+          <label
+            class="block text-[10px] font-bold uppercase tracking-widest text-zinc-500 mb-2"
+            >1. Device Designation</label
+          >
+          <input
+            type="text"
+            name="device_name"
+            placeholder="e.g. Alpha-Node-01"
+            required
+            autocomplete="off"
+            autofocus
+            class="w-full bg-zinc-950/50 border border-zinc-700/50 focus:bg-zinc-900 focus:border-indigo-500/50 rounded-xl px-4 py-3.5 text-sm text-white placeholder-zinc-600 outline-none transition shadow-inner"
+          />
+        </div>
+
+        <div>
+          <label
+            class="block text-[10px] font-bold uppercase tracking-widest text-zinc-500 mb-2"
+            >2. Target Architecture</label
+          >
+          <div class="grid grid-cols-3 gap-3">
+            <label class="cursor-pointer group">
+              <input
+                type="radio"
+                name="os_type"
+                value="windows"
+                class="peer sr-only"
+                checked
+              />
+              <div
+                class="flex flex-col items-center p-4 rounded-xl border border-zinc-700/50 bg-zinc-950/30 peer-checked:border-indigo-500/50 peer-checked:bg-indigo-500/10 peer-checked:shadow-[0_0_15px_rgba(99,102,241,0.15)] transition-all"
+              >
+                <span
+                  class="text-2xl mb-2 grayscale opacity-50 group-hover:grayscale-0 group-hover:opacity-100 peer-checked:grayscale-0 peer-checked:opacity-100 transition-all"
+                  >🪟</span
+                >
+                <span
+                  class="text-[10px] font-bold text-zinc-500 peer-checked:text-indigo-400 uppercase tracking-widest"
+                  >Windows</span
+                >
+              </div>
+            </label>
+
+            <label class="cursor-pointer group">
+              <input
+                type="radio"
+                name="os_type"
+                value="mac"
+                class="peer sr-only"
+              />
+              <div
+                class="flex flex-col items-center p-4 rounded-xl border border-zinc-700/50 bg-zinc-950/30 peer-checked:border-indigo-500/50 peer-checked:bg-indigo-500/10 peer-checked:shadow-[0_0_15px_rgba(99,102,241,0.15)] transition-all"
+              >
+                <span
+                  class="text-2xl mb-2 grayscale opacity-50 group-hover:grayscale-0 group-hover:opacity-100 peer-checked:grayscale-0 peer-checked:opacity-100 transition-all"
+                  >🍏</span
+                >
+                <span
+                  class="text-[10px] font-bold text-zinc-500 peer-checked:text-indigo-400 uppercase tracking-widest"
+                  >Unix/Mac</span
+                >
+              </div>
+            </label>
+
+            <label class="cursor-pointer group">
+              <input
+                type="radio"
+                name="os_type"
+                value="mobile"
+                class="peer sr-only"
+              />
+              <div
+                class="flex flex-col items-center p-4 rounded-xl border border-zinc-700/50 bg-zinc-950/30 peer-checked:border-indigo-500/50 peer-checked:bg-indigo-500/10 peer-checked:shadow-[0_0_15px_rgba(99,102,241,0.15)] transition-all"
+              >
+                <span
+                  class="text-2xl mb-2 grayscale opacity-50 group-hover:grayscale-0 group-hover:opacity-100 peer-checked:grayscale-0 peer-checked:opacity-100 transition-all"
+                  >📱</span
+                >
+                <span
+                  class="text-[10px] font-bold text-zinc-500 peer-checked:text-indigo-400 uppercase tracking-widest"
+                  >Mobile</span
+                >
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <div class="pt-2 space-y-3">
+          <button
+            type="submit"
+            class="w-full py-3.5 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-xl shadow-[0_4px_15px_rgba(79,70,229,0.3)] transition-all duration-300 text-xs tracking-widest uppercase flex justify-center items-center space-x-2"
+          >
+            <span>Generate Deployment Script</span>
+            <svg
+              class="w-4 h-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M14 5l7 7m0 0l-7 7m7-7H3"
+              ></path>
+            </svg>
+          </button>
+
+          <a
+            href="/dashboard"
+            class="block w-full py-3.5 text-center bg-zinc-800/50 hover:bg-zinc-800 border border-zinc-700/50 text-zinc-400 hover:text-white font-bold rounded-xl transition-all text-xs tracking-widest uppercase"
+          >
+            Cancel Phase
+          </a>
+        </div>
+      </form>
+    </div>
+
+    <script>
+      document
+        .getElementById("enrollForm")
+        .addEventListener("submit", function (e) {
+          // Find which radio button is checked
+          const selectedOs = document.querySelector(
+            'input[name="os_type"]:checked',
+          ).value;
+          // Save it to the browser's short term memory
+          sessionStorage.setItem("target_os", selectedOs);
+        });
+    </script>
+  </body>
+</html>

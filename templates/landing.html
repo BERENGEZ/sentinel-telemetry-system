@@ -1,0 +1,496 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sentinel | Enterprise Telemetry</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      /* Smooth scrollbar */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: rgba(148, 163, 184, 0.4);
+        border-radius: 10px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: rgba(148, 163, 184, 0.7);
+      }
+
+      /* Subtle scanline animation for the Pro feel */
+      @keyframes scanline {
+        0% {
+          transform: translateY(-100%);
+          opacity: 0;
+        }
+        50% {
+          opacity: 0.2;
+        }
+        100% {
+          transform: translateY(100%);
+          opacity: 0;
+        }
+      }
+      .animate-scan {
+        animation: scanline 3s linear infinite;
+      }
+    </style>
+  </head>
+
+  <!-- Soft, premium background -->
+  <body
+    class="bg-[#f8fafc] text-slate-800 font-sans antialiased flex min-h-screen relative overflow-x-hidden"
+  >
+    <!-- THE AURORA BACKGROUND -->
+    <div
+      class="fixed top-0 left-1/4 w-[500px] h-[500px] bg-blue-400/20 rounded-full blur-[120px] pointer-events-none -z-10"
+    ></div>
+    <div
+      class="fixed bottom-0 right-1/4 w-[600px] h-[600px] bg-indigo-400/10 rounded-full blur-[150px] pointer-events-none -z-10"
+    ></div>
+    <div
+      class="fixed top-1/2 left-1/2 w-[400px] h-[400px] bg-purple-400/10 rounded-full blur-[100px] pointer-events-none -z-10"
+    ></div>
+
+    <!-- THE GLASS HOVER SIDEBAR -->
+    <aside
+      class="fixed inset-y-0 left-0 bg-white/60 backdrop-blur-2xl border-r border-white/80 w-16 hover:w-64 transition-all duration-300 z-50 flex flex-col group shadow-[4px_0_24px_rgba(0,0,0,0.04)]"
+    >
+      <!-- Brand Logo Area -->
+      <div
+        class="h-20 flex items-center px-5 border-b border-white/60 shrink-0"
+      >
+        <div
+          class="w-6 h-6 bg-gradient-to-br from-blue-600 to-indigo-700 rounded-lg shadow-md shrink-0"
+        ></div>
+        <span
+          class="ml-4 font-extrabold text-xl tracking-tight text-slate-900 opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap"
+        >
+          Sentinel
+        </span>
+      </div>
+
+      <!-- Navigation Icons -->
+      <nav class="flex-1 py-8 space-y-3 px-3">
+        <a
+          href="/"
+          class="flex items-center px-2.5 py-2.5 text-indigo-700 bg-white shadow-sm border border-indigo-100/50 rounded-xl transition-all"
+        >
+          <svg
+            class="w-5 h-5 shrink-0"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2.5"
+              d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
+            ></path>
+          </svg>
+          <span
+            class="ml-4 font-bold opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap"
+            >Platform Overview</span
+          >
+        </a>
+        <a
+          href="/login"
+          class="flex items-center px-2.5 py-2.5 text-slate-500 hover:text-indigo-600 hover:bg-white/50 rounded-xl transition-all"
+        >
+          <svg
+            class="w-5 h-5 shrink-0"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+            ></path>
+          </svg>
+          <span
+            class="ml-4 font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap"
+            >Command Center</span
+          >
+        </a>
+      </nav>
+
+      <div class="p-4 border-t border-white/60">
+        <a
+          href="/register"
+          class="flex items-center px-2.5 py-2.5 text-slate-500 hover:text-indigo-600 hover:bg-white/50 rounded-xl transition-all"
+        >
+          <svg
+            class="w-5 h-5 shrink-0"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"
+            ></path>
+          </svg>
+          <span
+            class="ml-4 font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap"
+            >Get Registered</span
+          >
+        </a>
+      </div>
+    </aside>
+
+    <!-- MAIN PITCH WORKSPACE -->
+    <main
+      class="ml-16 flex-1 w-full px-8 md:px-16 lg:px-24 py-12 md:py-16 relative z-10 overflow-x-hidden"
+    >
+      <!-- Top Pill -->
+      <div class="flex justify-center md:justify-start mb-12">
+        <div
+          class="inline-flex items-center px-5 py-2 bg-white/80 backdrop-blur-md border border-white rounded-full text-[10px] font-extrabold tracking-widest text-indigo-700 shadow-sm uppercase"
+        >
+          <span
+            class="w-2 h-2 rounded-full bg-indigo-500 mr-2 animate-pulse shadow-[0_0_8px_rgba(99,102,241,0.6)]"
+          ></span>
+          Enterprise Hardware Telemetry
+        </div>
+      </div>
+
+      <!-- Hero Section -->
+      <div
+        class="mb-32 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center relative min-h-[55vh]"
+      >
+        <!-- Left Column: Text & Buttons -->
+        <div class="lg:col-span-7 relative z-20 max-w-3xl">
+          <h1
+            class="text-5xl md:text-7xl font-extrabold text-slate-900 tracking-tight mb-6 leading-[1.05]"
+          >
+            Total control over your
+            <span
+              class="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600"
+              >hardware fleet.</span
+            >
+          </h1>
+          <p
+            class="text-lg md:text-xl text-slate-500 leading-relaxed mb-10 font-medium"
+          >
+            Sentinel is an enterprise-grade telemetry platform. Deploy silent
+            tracking agents to monitor global device locations, live battery
+            vitals, and execute remote panic protocols before assets are
+            compromised.
+          </p>
+
+          <div class="flex flex-col sm:flex-row gap-4">
+            <a
+              href="/login"
+              class="px-8 py-4 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl shadow-[0_8px_20px_rgba(79,70,229,0.25)] hover:shadow-[0_10px_25px_rgba(79,70,229,0.35)] hover:-translate-y-0.5 transition-all text-center"
+            >
+              Initialize Terminal
+            </a>
+            <a
+              href="#features"
+              class="px-8 py-4 bg-white/60 hover:bg-white/90 backdrop-blur-md border border-white text-slate-700 font-bold rounded-xl shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all text-center"
+            >
+              View Capabilities
+            </a>
+          </div>
+        </div>
+
+        <!-- Right Column: Floating Glass Mockup (FICTITIOUS DATA) -->
+        <div
+          class="hidden lg:flex lg:col-span-5 relative justify-end w-full lg:translate-x-8 xl:translate-x-12"
+        >
+          <!-- Secondary Ghost Card -->
+          <div
+            class="absolute right-[-2%] top-10 w-full max-w-md bg-white/40 backdrop-blur-sm border border-white/60 p-6 rounded-[2rem] transform rotate-6 scale-95 -z-20 shadow-sm"
+          >
+            <div class="h-32 border-b border-white/50 mb-4"></div>
+            <div class="h-6 bg-white/50 rounded w-2/3"></div>
+          </div>
+
+          <!-- Decorative glow behind glass -->
+          <div
+            class="absolute right-0 top-0 w-full max-w-md h-full bg-gradient-to-tr from-blue-400/20 to-indigo-500/20 rounded-[2rem] transform -rotate-2 scale-105 -z-10 blur-xl"
+          ></div>
+
+          <!-- The Main Glass Card -->
+          <div
+            class="w-full max-w-md bg-white/50 backdrop-blur-2xl border border-white/80 p-8 rounded-[2rem] shadow-[0_20px_40px_rgba(0,0,0,0.06)] relative overflow-hidden transform hover:-translate-y-1 transition-transform duration-500 z-10 group"
+          >
+            <!-- Subtle Scanline Effect -->
+            <div
+              class="absolute inset-0 w-full h-full bg-gradient-to-b from-transparent via-white to-transparent opacity-0 group-hover:animate-scan pointer-events-none z-0"
+            ></div>
+
+            <!-- Card Header -->
+            <div
+              class="flex justify-between items-center mb-8 border-b border-white/60 pb-4 relative z-10"
+            >
+              <div class="flex items-center space-x-2">
+                <span
+                  class="w-3 h-3 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_10px_rgba(52,211,153,0.8)]"
+                ></span>
+                <span
+                  class="text-[10px] font-bold text-slate-500 uppercase tracking-widest"
+                  >Live Target Feed</span
+                >
+              </div>
+              <span
+                class="text-[10px] font-mono font-bold text-indigo-600 bg-indigo-50 px-2.5 py-1.5 rounded-md shadow-sm border border-indigo-100"
+                >NODE-X99-PRO</span
+              >
+            </div>
+
+            <!-- Mock Dashboard Data (Completely Fake/Generic) -->
+            <div class="space-y-4 relative z-10">
+              <!-- Location Row (Tokyo Coordinates) -->
+              <div
+                class="bg-white/70 rounded-xl p-5 flex justify-between items-center shadow-sm border border-white hover:bg-white transition-colors"
+              >
+                <div class="flex items-center space-x-4">
+                  <div
+                    class="w-10 h-10 bg-blue-50 text-blue-600 rounded-lg flex items-center justify-center text-lg border border-blue-100 shadow-sm relative overflow-hidden"
+                  >
+                    <span class="relative z-10">📍</span>
+                  </div>
+                  <span
+                    class="font-extrabold text-slate-800 text-sm tracking-wide"
+                    >Location Lock</span
+                  >
+                </div>
+                <div class="text-right">
+                  <div
+                    class="text-sm font-mono font-bold text-slate-600 tracking-tight"
+                  >
+                    35.6895° N, 139.6917° E
+                  </div>
+                  <div
+                    class="text-[10px] text-slate-400 mt-0.5 font-medium uppercase tracking-wider"
+                  >
+                    Updated just now
+                  </div>
+                </div>
+              </div>
+
+              <!-- Battery Row -->
+              <div
+                class="bg-white/70 rounded-xl p-5 flex justify-between items-center shadow-sm border border-white hover:bg-white transition-colors"
+              >
+                <div class="flex items-center space-x-4">
+                  <div
+                    class="w-10 h-10 bg-emerald-50 text-emerald-600 rounded-lg flex items-center justify-center text-lg border border-emerald-100 shadow-sm"
+                  >
+                    🔋
+                  </div>
+                  <span
+                    class="font-extrabold text-slate-800 text-sm tracking-wide"
+                    >Power Vitals</span
+                  >
+                </div>
+                <div class="flex items-center space-x-3">
+                  <span class="text-sm font-bold text-emerald-600">92%</span>
+                  <span
+                    class="w-8 h-4 bg-emerald-400 rounded-sm border border-emerald-500 shadow-inner relative overflow-hidden"
+                  >
+                    <!-- Mock charging animation inner bar -->
+                    <span
+                      class="absolute left-0 top-0 bottom-0 w-[92%] bg-emerald-500"
+                    ></span>
+                    <span
+                      class="absolute right-[-3px] top-[3px] w-[3px] h-2 bg-slate-300 rounded-r-sm"
+                    ></span>
+                  </span>
+                </div>
+              </div>
+
+              <!-- Panic Protocol Row -->
+              <div
+                class="bg-white/70 rounded-xl p-5 flex justify-between items-center shadow-sm border border-white hover:bg-white transition-colors"
+              >
+                <div class="flex items-center space-x-4">
+                  <div
+                    class="w-10 h-10 bg-slate-50 text-slate-600 rounded-lg flex items-center justify-center text-lg border border-slate-200 shadow-sm"
+                  >
+                    🛡️
+                  </div>
+                  <span
+                    class="font-extrabold text-slate-800 text-sm tracking-wide"
+                    >Panic Protocol</span
+                  >
+                </div>
+                <span
+                  class="text-[10px] font-bold text-slate-500 px-3 py-1.5 bg-slate-100 border border-slate-200 rounded-md shadow-inner tracking-widest uppercase relative flex items-center space-x-1.5"
+                >
+                  <span class="w-1.5 h-1.5 rounded-full bg-slate-400"></span>
+                  <span>Standby</span>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Feature Grid -->
+      <div
+        id="features"
+        class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-[1600px] mx-auto"
+      >
+        <!-- Card 1 -->
+        <div
+          class="bg-white/50 backdrop-blur-xl border border-white p-8 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.03)] hover:shadow-[0_15px_40px_rgb(0,0,0,0.06)] hover:-translate-y-1 transition-all duration-300 group"
+        >
+          <div
+            class="w-14 h-14 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center mb-6 border border-blue-100 shadow-sm group-hover:scale-110 transition-transform"
+          >
+            <svg
+              class="w-7 h-7"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.243-4.243a8 8 0 1111.314 0z"
+              ></path>
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+              ></path>
+            </svg>
+          </div>
+          <h3 class="text-xl font-extrabold text-slate-900 mb-3 tracking-tight">
+            Global Geolocation
+          </h3>
+          <p class="text-slate-500 text-sm leading-relaxed font-medium">
+            Pinpoint your devices globally using real-time GPS and IP telemetry.
+            View historical breadcrumbs and track live movements on the
+            interactive command map.
+          </p>
+        </div>
+
+        <!-- Card 2 -->
+        <div
+          class="bg-white/50 backdrop-blur-xl border border-white p-8 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.03)] hover:shadow-[0_15px_40px_rgb(0,0,0,0.06)] hover:-translate-y-1 transition-all duration-300 group"
+        >
+          <div
+            class="w-14 h-14 bg-indigo-50 text-indigo-600 rounded-2xl flex items-center justify-center mb-6 border border-indigo-100 shadow-sm group-hover:scale-110 transition-transform"
+          >
+            <svg
+              class="w-7 h-7"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M13 10V3L4 14h7v7l9-11h-7z"
+              ></path>
+            </svg>
+          </div>
+          <h3 class="text-xl font-extrabold text-slate-900 mb-3 tracking-tight">
+            Hardware Telemetry
+          </h3>
+          <p class="text-slate-500 text-sm leading-relaxed font-medium">
+            Extract critical hardware vitals from Windows, macOS, Linux, and
+            Android seamlessly. Receive instant warnings before remote devices
+            lose power.
+          </p>
+        </div>
+
+        <!-- Card 3 -->
+        <div
+          class="bg-white/50 backdrop-blur-xl border border-white p-8 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.03)] hover:shadow-[0_15px_40px_rgb(0,0,0,0.06)] hover:-translate-y-1 transition-all duration-300 group"
+        >
+          <div
+            class="w-14 h-14 bg-red-50 text-red-600 rounded-2xl flex items-center justify-center mb-6 border border-red-100 shadow-sm group-hover:scale-110 transition-transform"
+          >
+            <svg
+              class="w-7 h-7"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+              ></path>
+            </svg>
+          </div>
+          <h3 class="text-xl font-extrabold text-slate-900 mb-3 tracking-tight">
+            Active Panic Protocol
+          </h3>
+          <p class="text-slate-500 text-sm leading-relaxed font-medium">
+            Instantly flag a device as lost to trigger aggressive tracking. The
+            agent drops ping intervals to 60 seconds, locking down visibility
+            for rapid asset recovery.
+          </p>
+        </div>
+      </div>
+
+      <!-- Glassmorphism Footer -->
+      <footer
+        class="mt-32 max-w-[1600px] mx-auto border-t border-white/60 pt-10 pb-8 flex flex-col md:flex-row justify-between items-center"
+      >
+        <!-- Left Side: Branding -->
+        <div class="mb-6 md:mb-0 text-center md:text-left">
+          <div
+            class="flex items-center justify-center md:justify-start space-x-2 mb-2"
+          >
+            <div
+              class="w-3 h-3 bg-gradient-to-br from-blue-600 to-indigo-700 rounded-sm shadow-sm"
+            ></div>
+            <span class="text-lg font-extrabold text-slate-900 tracking-tight"
+              >Sentinel System</span
+            >
+          </div>
+          <p class="text-xs text-slate-500 font-medium">
+            Version 1.0.0 &copy; 2026. All rights reserved.
+          </p>
+        </div>
+
+        <!-- Right Side: Contact Info -->
+        <div
+          class="text-center md:text-right text-sm text-slate-600 space-y-1.5"
+        >
+          <p
+            class="font-extrabold text-slate-400 uppercase tracking-widest text-[10px] mb-2"
+          >
+            Architected by Baraka Berenge
+          </p>
+          <p>
+            <a
+              href="mailto:barakaberenge@gmail.com"
+              class="hover:text-indigo-600 font-semibold transition-colors"
+            >
+              barakaberenge@gmail.com
+            </a>
+          </p>
+          <p>
+            <a
+              href="tel:+393881187358"
+              class="hover:text-indigo-600 font-semibold transition-colors"
+            >
+              +39 388 118 7358
+            </a>
+          </p>
+        </div>
+      </footer>
+    </main>
+  </body>
+</html>

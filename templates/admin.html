@@ -1,0 +1,410 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Console | Sentinel</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: rgba(82, 82, 91, 0.5);
+        border-radius: 10px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: rgba(113, 113, 122, 0.8);
+      }
+
+      /* SLEEK ENTERPRISE TOAST NOTIFICATION CSS */
+      #toast {
+        visibility: hidden;
+        min-width: 250px;
+        background-color: rgba(24, 24, 27, 0.95);
+        color: #4ade80;
+        text-align: center;
+        border-radius: 12px;
+        padding: 16px 20px;
+        position: fixed;
+        z-index: 1000;
+        left: 50%;
+        bottom: 40px;
+        transform: translateX(-50%);
+        border: 1px solid rgba(74, 222, 128, 0.2);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.15em;
+        font-weight: 800;
+      }
+      #toast.show {
+        visibility: visible;
+        animation:
+          fadein 0.5s,
+          fadeout 0.5s 2.5s;
+      }
+      #toast.error {
+        color: #f87171;
+        border-color: rgba(248, 113, 113, 0.2);
+      }
+      @keyframes fadein {
+        from {
+          bottom: 0;
+          opacity: 0;
+        }
+        to {
+          bottom: 40px;
+          opacity: 1;
+        }
+      }
+      @keyframes fadeout {
+        from {
+          bottom: 40px;
+          opacity: 1;
+        }
+        to {
+          bottom: 0;
+          opacity: 0;
+        }
+      }
+    </style>
+  </head>
+
+  <body
+    class="bg-zinc-950 text-zinc-200 font-sans min-h-screen relative overflow-x-hidden flex flex-col"
+  >
+    <!-- SUBTLE AMBIENT GLOW -->
+    <div
+      class="fixed top-[-10%] left-[-10%] w-[600px] h-[600px] bg-indigo-600/10 rounded-full blur-[120px] pointer-events-none z-0"
+    ></div>
+    <div
+      class="fixed bottom-[-10%] right-[-10%] w-[600px] h-[600px] bg-zinc-500/10 rounded-full blur-[150px] pointer-events-none z-0"
+    ></div>
+
+    <!-- Frosted Glass Navbar -->
+    <header
+      class="bg-zinc-900/50 backdrop-blur-2xl border-b border-zinc-800/80 px-8 py-4 flex justify-between items-center shadow-[0_4px_30px_rgba(0,0,0,0.3)] sticky top-0 z-50"
+    >
+      <div class="flex items-center space-x-4">
+        <div
+          class="flex items-center justify-center h-8 w-8 rounded-lg bg-red-500/10 border border-red-500/30 text-red-500 shadow-[0_0_15px_rgba(239,68,68,0.2)]"
+        >
+          <svg
+            class="w-4 h-4"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+            ></path>
+          </svg>
+        </div>
+        <h1 class="font-bold tracking-widest uppercase text-sm text-white">
+          Sentinel
+          <span class="text-zinc-500 font-medium">| Overlord Console</span>
+        </h1>
+      </div>
+      <div class="flex items-center space-x-6">
+        <a
+          href="/dashboard"
+          class="text-xs font-bold uppercase tracking-wider text-zinc-400 hover:text-indigo-400 transition-colors flex items-center space-x-2"
+        >
+          <svg
+            class="w-4 h-4"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M10 19l-7-7m0 0l7-7m-7 7h18"
+            ></path>
+          </svg>
+          <span>Command Center</span>
+        </a>
+        <div class="h-4 w-px bg-zinc-800"></div>
+        <a
+          href="/logout"
+          class="text-xs font-bold uppercase tracking-wider text-red-500 hover:text-red-400 transition-colors"
+          >Terminate Session</a
+        >
+      </div>
+    </header>
+
+    <main
+      class="max-w-7xl mx-auto px-4 md:px-8 py-10 flex-1 w-full relative z-10"
+    >
+      <!-- Stats Overview -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+        <div
+          class="bg-zinc-900/40 backdrop-blur-xl p-8 rounded-3xl shadow-lg border border-zinc-700/50 relative overflow-hidden group"
+        >
+          <div
+            class="absolute -right-10 -top-10 w-32 h-32 bg-indigo-500/10 rounded-full blur-2xl group-hover:bg-indigo-500/20 transition-colors"
+          ></div>
+          <h3
+            class="text-xs text-zinc-400 font-bold uppercase tracking-widest mb-2 flex items-center space-x-2"
+          >
+            <span>Registered Operatives</span>
+          </h3>
+          <p class="text-5xl font-extrabold text-white tracking-tight">
+            {{ users|length }}
+          </p>
+        </div>
+
+        <div
+          class="bg-zinc-900/40 backdrop-blur-xl p-8 rounded-3xl shadow-lg border border-zinc-700/50 relative overflow-hidden group"
+        >
+          <div
+            class="absolute -right-10 -top-10 w-32 h-32 bg-emerald-500/10 rounded-full blur-2xl group-hover:bg-emerald-500/20 transition-colors"
+          ></div>
+          <h3
+            class="text-xs text-zinc-400 font-bold uppercase tracking-widest mb-2 flex items-center space-x-2"
+          >
+            <span>Active Hardware Fleet</span>
+          </h3>
+          <p class="text-5xl font-extrabold text-white tracking-tight">
+            {{ devices|length }}
+          </p>
+        </div>
+      </div>
+
+      <!-- System Users Registry -->
+      <div class="mb-12">
+        <h2 class="text-lg font-bold mb-4 text-white tracking-wide">
+          User Accounts Registry
+        </h2>
+        <div
+          class="bg-zinc-900/40 backdrop-blur-2xl rounded-2xl shadow-[0_10px_30px_rgba(0,0,0,0.2)] border border-zinc-700/50 overflow-hidden"
+        >
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse whitespace-nowrap">
+              <thead>
+                <tr
+                  class="bg-zinc-950/60 border-b border-zinc-800/80 text-[10px] font-bold uppercase tracking-widest text-zinc-500"
+                >
+                  <th class="p-5">Client Name & Title</th>
+                  <th class="p-5">Contact Email</th>
+                  <th class="p-5">Phone Number</th>
+                  <th class="p-5">Location</th>
+                  <th class="p-5">Tier</th>
+                  <th class="p-5 text-right">Action</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-zinc-800/50 text-sm">
+                {% for u in users %}
+                <tr class="hover:bg-zinc-800/40 transition-colors">
+                  <td class="p-5">
+                    <span class="font-bold text-white tracking-wide"
+                      >{{ u.prefix or '' }} {{ u.full_name or 'N/A' }}</span
+                    >
+                  </td>
+                  <td class="p-5 font-mono text-xs text-zinc-400">
+                    {{ u.email }}
+                  </td>
+                  <td class="p-5 text-zinc-400">
+                    {{ u.phone_number or 'Unspecified' }}
+                  </td>
+                  <td class="p-5 text-zinc-400">
+                    {{ u.place_of_stay or 'Unspecified' }}
+                  </td>
+                  <td class="p-5">
+                    <span
+                      class="px-3 py-1 rounded-md text-[10px] font-bold uppercase tracking-widest border {{ 'bg-indigo-500/10 text-indigo-400 border-indigo-500/30' if u.account_tier == 'premium' else 'bg-zinc-800/80 text-zinc-400 border-zinc-700' }}"
+                    >
+                      {{ u.account_tier | upper }}
+                    </span>
+                  </td>
+                  <td
+                    class="p-5 text-right flex justify-end items-center space-x-3"
+                  >
+                    {% if u.email != 'admin@barakaberenge.com' %}
+                    <a
+                      href="/admin/user/{{ u.id }}"
+                      class="bg-zinc-800 hover:bg-indigo-600 text-indigo-400 hover:text-white border border-zinc-700 hover:border-indigo-500 text-[10px] uppercase tracking-widest font-bold py-2 px-4 rounded-lg transition-all shadow-sm"
+                    >
+                      Dossier
+                    </a>
+                    <form
+                      action="/admin/delete_user/{{ u.id }}"
+                      method="POST"
+                      onsubmit="
+                        return confirm(
+                          'WARNING: Deleting this user will permanently erase their profile, all devices, and historical telemetry. Proceed?',
+                        );
+                      "
+                    >
+                      <button
+                        type="submit"
+                        class="bg-zinc-800 hover:bg-red-600 text-red-400 hover:text-white border border-zinc-700 hover:border-red-500 text-[10px] uppercase tracking-widest font-bold py-2 px-4 rounded-lg transition-all shadow-sm"
+                      >
+                        Terminate
+                      </button>
+                    </form>
+                    {% else %}
+                    <span
+                      class="text-[10px] text-emerald-400 font-bold uppercase tracking-widest px-4 py-2 border border-emerald-500/30 rounded-lg bg-emerald-500/10 shadow-[0_0_10px_rgba(16,185,129,0.1)]"
+                    >
+                      System Host
+                    </span>
+                    {% endif %}
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Global Device Registry -->
+      <div class="mb-12">
+        <h2 class="text-lg font-bold mb-4 text-white tracking-wide">
+          Global Hardware Registry
+        </h2>
+        <div
+          class="bg-zinc-900/40 backdrop-blur-2xl rounded-2xl shadow-[0_10px_30px_rgba(0,0,0,0.2)] border border-zinc-700/50 overflow-hidden"
+        >
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse whitespace-nowrap">
+              <thead>
+                <tr
+                  class="bg-zinc-950/60 border-b border-zinc-800/80 text-[10px] font-bold uppercase tracking-widest text-zinc-500"
+                >
+                  <th class="p-5">Device Designation</th>
+                  <th class="p-5">Assigned Owner</th>
+                  <th class="p-5">Last Known IP</th>
+                  <th class="p-5">Battery Vitals</th>
+                  <th class="p-5 text-right">Action</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-zinc-800/50 text-sm">
+                {% for device in devices %}
+                <tr class="hover:bg-zinc-800/40 transition-all duration-300">
+                  <td class="p-5">
+                    <span class="font-bold text-white tracking-wide block mb-1"
+                      >{{ device.device_name }}</span
+                    >
+                    <span
+                      class="text-[10px] text-zinc-500 font-mono bg-zinc-950/50 px-2 py-0.5 rounded border border-zinc-800"
+                      >{{ device.device_id }}</span
+                    >
+                  </td>
+                  <td class="p-5 text-zinc-400">{{ device.owner_email }}</td>
+                  <td class="p-5 font-mono text-xs text-zinc-500">
+                    {{ device.ip_address or 'Unknown' }}
+                  </td>
+                  <td class="p-5">
+                    <div
+                      class="flex items-center space-x-2 text-zinc-300 font-bold mb-1"
+                    >
+                      <span>🔋</span>
+                      <span
+                        >{{ device.battery_level ~ '%' if device.battery_level
+                        else 'N/A' }}</span
+                      >
+                    </div>
+                    <span class="text-[10px] text-zinc-500 font-medium"
+                      >{{ device.timestamp.strftime('%Y-%m-%d %H:%M') if
+                      device.timestamp else 'Never' }}</span
+                    >
+                  </td>
+                  <td class="p-5 text-right">
+                    <!-- THE UPDATED BUTTON: No form tag, fires JS directly -->
+                    <button
+                      type="button"
+                      onclick="deleteDevice('{{ device.device_id }}', this)"
+                      class="bg-zinc-800 hover:bg-orange-600 text-orange-400 hover:text-white border border-zinc-700 hover:border-orange-500 text-[10px] uppercase tracking-widest font-bold py-2 px-4 rounded-lg transition-all shadow-sm"
+                    >
+                      Purge Node
+                    </button>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Professional Footer -->
+    <footer
+      class="border-t border-zinc-800/80 bg-zinc-900/30 backdrop-blur-lg text-center py-6 mt-auto"
+    >
+      <p class="text-[10px] text-zinc-500 uppercase tracking-widest font-bold">
+        Powered by
+        <strong class="text-indigo-400 font-extrabold"
+          >Sentinel Enterprise</strong
+        >
+        &copy; 2026. Architected by
+        <span class="text-zinc-300">Baraka Berenge</span>.
+      </p>
+    </footer>
+
+    <!-- TOAST NOTIFICATION CONTAINER -->
+    <div id="toast"></div>
+
+    <script>
+      function showToast(message, isError = false) {
+        let toast = document.getElementById("toast");
+        toast.textContent = message;
+
+        if (isError) {
+          toast.classList.add("error");
+        } else {
+          toast.classList.remove("error");
+        }
+
+        toast.classList.add("show");
+
+        // Let it fade out after 3 Seconds
+        setTimeout(() => {
+          toast.classList.remove("show");
+        }, 3000);
+      }
+
+      // ASYNCHRONOUS DELETE LOGIC
+      async function deleteDevice(deviceId, btnElement) {
+        if (
+          !confirm("WARNING: Permanently purge this node from the network?")
+        ) {
+          return; // Stop if they click cancel
+        }
+
+        try {
+          // Send the delete command to Python in the background
+          let response = await fetch(`/admin/delete_device/${deviceId}`, {
+            method: "POST",
+          });
+
+          if (response.ok) {
+            showToast("Node Purged Successfully");
+
+            // Animate the row disappearing seamlessly
+            let row = btnElement.closest("tr");
+            row.style.opacity = "0";
+            setTimeout(() => {
+              row.remove();
+            }, 300); // Wait for fade out to finish before deleting element
+          } else {
+            showToast("Server rejected purge request.", true);
+          }
+        } catch (error) {
+          showToast("Network error. Unable to purge node.", true);
+        }
+      }
+    </script>
+  </body>
+</html>
