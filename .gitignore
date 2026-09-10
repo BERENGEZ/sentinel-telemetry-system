@@ -6,4 +6,5 @@ __pycache__/
 *.pyc
 
 # Ignore virtual environments (if you have one)
-venv/
+venv/actions-runner/
+.env
